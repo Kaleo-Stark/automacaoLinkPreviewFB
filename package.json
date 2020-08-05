@@ -1,0 +1,22 @@
+{
+  "name": "automacaolinkpreviewfb",
+  "version": "1.0.0",
+  "description": "Automação de post com preview no Facebook utilizando a biblioteca Puppetter.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kaleo-Stark/automacaoLinkPreviewFB.git"
+  },
+  "author": "Kaleo-Stark",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kaleo-Stark/automacaoLinkPreviewFB/issues"
+  },
+  "homepage": "https://github.com/Kaleo-Stark/automacaoLinkPreviewFB#readme",
+  "dependencies": {
+    "puppeteer": "^5.2.1"
+  }
+}
