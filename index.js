@@ -28,3 +28,47 @@ async function logarFacebook(login, senha, pagina) { // FUNÇÃO DE LOGIN NO FAC
     console.log('logando')
     await pagina.waitForNavigation({ waitUntil: 'networkidle0' }); // ..... ESPERA A PAGINA NAVEGAR PARA A CONTA.
 }
+
+async function irPaginaEPublicar(linkPagina, linkPublicacao, pagina) { // FUNÇÃO DE NAVEGAR E PUBLICAR NA PAGINA   
+    console.log('Navegando para a página e esperando 3s ...');
+    await pagina.goto(linkPagina); // ..................................... NAVEGA PARA A PÁGINA NO LOCAL DE PUBLICAÇÃO.
+    await pagina.waitFor(3000); // ........................................ ESPERA 3 SEGUNDOS PARA QUE TENHAMOS QUE A PÁGINA CARREGOU.
+    
+    console.log('Clicando para escrever a publicação e esperando 3s ...');
+    await pagina.click('[aria-label="Escreva uma publicação..."]'); // .... CLICA NO CAMPO DE PUBLICAÇÃO.
+    await pagina.waitFor(3000); // ........................................ ESPERA 3 SEGUNDOS.
+    
+    console.log('Escrevendo publicação, e esperando 3s ...');
+    await pagina.keyboard.type(linkPublicacao); // ........................ ESCREVE O LINK DA POSTAGEM QUE DEVE APARECER O PREVIEW.
+    await pagina.waitFor(3000);
+
+    /*
+    OBS: Quando escrevemos o link da postagem o preview não aparece, o preview so aparece quando colamos um link
+         na area de texto então para resolver esse problema vamos selecionar o link, recortar e colar, assim o
+         preview irá aparecer.
+    */
+
+    await pagina.keyboard.down('ControlLeft'); // ......................... APERTA A TECLA CONTROL E "SEGURA".
+    await pagina.keyboard.press('a'); // .................................. APERTA A TECLA a, ASSIM SELECIONANDO TODO O LINK. 
+    await pagina.keyboard.up('ControlLeft'); // ........................... "SOLTA" A TECLA CONTROL.
+
+    await pagina.keyboard.down('ControlLeft'); // ......................... APERTA A TECLA CONTROL E "SEGURA".
+    await pagina.keyboard.press('x'); // .................................. APERTA A TECLA x, ASSIM RECORTANDO O LINK SELECIONADO.
+    await pagina.keyboard.up('ControlLeft'); // ........................... "SOLTA" A TECLA CONTROL.
+
+    await pagina.keyboard.down('ControlLeft'); // ......................... APERTA A TECLA CONTROL E "SEGURA".
+    await pagina.keyboard.press('v'); // .................................. APERTA A TECLA v, ASSIM COLANDO O LINK RECORTADO.
+    await pagina.keyboard.up('ControlLeft'); // ........................... "SOLTA" A TECLA CONTROL.
+
+    console.log('Esperando preview, 1 min ...')
+    await pagina.waitFor(60000); // ....................................... ESPERA 1 MIN PARA QUE O PREVIEW SEJA CARREGADO.
+    
+    console.log('Tirando uma foto de como ficou ...')
+    await pagina.screenshot({ path: 'postComPreview.png' }); // .................. TIRA UMA FOTO DA TELA PARA VER COMO ESTÁ O POST ANTES DE PUBLICAR.
+
+    console.log('Postando e esperando 1 minuto ...')
+    await pagina.click('button._1mf7'); // ................................ CLICA NO BOTÃO PARA PUBLICAR.
+    await pagina.waitFor(60000);
+    
+    console.log('Post completo ;)');
+}
