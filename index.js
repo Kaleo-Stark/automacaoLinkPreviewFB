@@ -10,6 +10,29 @@ const linkPagina = ''; // ................. LINK DA PAGINA DO FACEBOOK, LINK JÁ
 const linkPublicacao = ''; // ............. LINK DA PAGINA WEB COM O CONTEÚDO QUE DESEJA PUBLICAR O PREVIEW
 // Exemplo: 'https://linkPublicacao.com.br/publicao.html'.
 
+(async () => {
+
+    // INICIALIZAÇÃO DE UM NAVEGADO PELO PUPPETEER
+    /* 
+    OBS: A linha a baixo comentada é a forma "normal" de inicializar um navegador pelo puppeteer, mas caso 
+         houver algum erro referente a sandbox por conta do cromium é so usar a segunda alternativa passando
+         o parametro ({ args: ['--no-sandbox', '--disable-setuid-sandbox'] }), esse erro é comum no linux. 
+    */
+    
+    //const navegador = await puppeteer.launch(); // ...................... FORMA "NORMAL" DE INICIALIZAR UM NAVEGADOR.
+    const navegador = await puppeteer //continuação abaixo.
+    .launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] }); // ... FORMA DE INICIALIZAR O NAVEGADOR SE HOUVER ERRO DE SANDBOX.
+
+    const pagina = await navegador.newPage(); // .......................... ESPERA O NAVEGADOR ABRIR UMA NOVA PÁGINA.
+
+    await logarFacebook(login, senha, pagina); // ......................... CHAMA A FUNÇÃO QUE LOGA NO FACEBOOK PASSANDO OS PARAMETROS NECESSÁRIOS.
+
+    await irPaginaEPublicar(linkPagina, linkPublicacao, pagina); // ....... CHAMA A FUNÇÃO QUE NAVEGA ATÉ A PAGINA E FAZ A PUBLICAÇÃO.
+
+    await navegador.close(); // ........................................... FECHA O NAVEGADOR APÓS A EXECUÇÃO DA AUTOMAÇÃO.
+
+})();
+
 async function logarFacebook(login, senha, pagina) { // FUNÇÃO DE LOGIN NO FACEBOOK
     console.log('Navegando para o facebook ...');
     await pagina.goto('https://web.facebook.com/');  // ................... VAI PARA A PÁGINA DO FACEBOOK.
